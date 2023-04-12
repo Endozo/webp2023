@@ -34,18 +34,33 @@
 </head>
 <body>
     <script>
-        var dataUrl = 'https://api.unsplash.com/phtots?client_id=812193ef71ca946e361ed541979a0cfd91e9419a19235fd05f51ea14233f020a&per_page=30';
-
+        
+        
         function getimg() {
-
-        }
+            var dataUrl = 'https://api.unsplash.com/photos?client_id=812193ef71ca946e361ed541979a0cfd91e9419a19235fd05f51ea14233f020a&per_page=30';
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', dataUrl, true);
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    dataset = JSON.parse(this.responseText);
+                    add_new_img(dataset);
+                }
+            };
+        };
 
         function add_new_img(dataset) {
-            
-        }
+            var mydiv = document.getElementById('gallery');
+
+            dataset.forEach(function(data, index) {
+                var Img = document.createElement('img');
+                Img.src = data['urls']['full'];
+                mydiv.appendChild(Img);
+            });
+        };
     </script>
 
-    <button onclick="Requestimg()">get img</button>
+    <button onclick="getimg()">get img</button>
     <div id="gallery" class="gallery"></div>
 </body>
 </html>
